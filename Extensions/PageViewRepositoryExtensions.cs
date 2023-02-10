@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Penguin.Cms.Web.Analytics.Entities;
 using Penguin.Persistence.Abstractions.Interfaces;
 using Penguin.Security.Abstractions.Interfaces;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Penguin.Cms.Web.Analytics.Extensions
 {
@@ -13,17 +10,9 @@ namespace Penguin.Cms.Web.Analytics.Extensions
     {
         public static int GetCountByUrl(this IRepository<PageView> repository, string Url)
         {
-            if (repository is null)
-            {
-                throw new ArgumentNullException(nameof(repository));
-            }
-
-            if (Url is null)
-            {
-                throw new ArgumentNullException(nameof(Url));
-            }
-
-            return repository.Where(pv => pv.Path == Url).Count();
+            return repository is null
+                ? throw new ArgumentNullException(nameof(repository))
+                : Url is null ? throw new ArgumentNullException(nameof(Url)) : repository.Where(pv => pv.Path == Url).Count();
         }
 
         public static void Record(this IRepository<PageView> repository, HttpContext httpContext, IUserSession userSession = null)
@@ -38,7 +27,7 @@ namespace Penguin.Cms.Web.Analytics.Extensions
                 throw new ArgumentNullException(nameof(httpContext));
             }
 
-            PageView pageView = new PageView(httpContext.Request);
+            PageView pageView = new(httpContext.Request);
 
             if (userSession?.IsLoggedIn ?? false)
             {
@@ -47,10 +36,13 @@ namespace Penguin.Cms.Web.Analytics.Extensions
 
             pageView.DateCreated = DateTime.Now;
 
-            using (IWriteContext context = repository.WriteContext())
-            {
-                repository.Add(pageView);
-            }
+            using IWriteContext context = repository.WriteContext();
+            repository.Add(pageView);
+        }
+
+        public static int GetCountByUrl(IRepository<PageView> repository, Uri Url)
+        {
+            throw new NotImplementedException();
         }
     }
 }

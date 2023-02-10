@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Penguin.Cms.Web.Analytics.Entities;
 using Penguin.Cms.Web.Analytics.Extensions;
 using Penguin.Persistence.Abstractions.Interfaces;
 using Penguin.Security.Abstractions.Interfaces;
@@ -17,7 +16,7 @@ namespace Penguin.Cms.Web.Analytics.Middleware
         //TODO: Learn what this is
         public RequestLogging(RequestDelegate next)
         {
-            this._next = next;
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context)
@@ -27,7 +26,7 @@ namespace Penguin.Cms.Web.Analytics.Middleware
                 throw new System.ArgumentNullException(nameof(context));
             }
 
-            await this._next(context).ConfigureAwait(true);
+            await _next(context).ConfigureAwait(true);
 
             //Open a new service scope to ensure there is no collision with anything running on the request
             IRepository<PageView> pageViewRepository = context.RequestServices.GetService<IRepository<PageView>>();

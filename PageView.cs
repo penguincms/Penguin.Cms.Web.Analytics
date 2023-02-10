@@ -2,7 +2,7 @@
 using Penguin.Cms.Entities;
 using System;
 
-namespace Penguin.Cms.Web.Analytics.Entities
+namespace Penguin.Cms.Web.Analytics
 {
     public class PageView : Entity
     {
@@ -14,11 +14,11 @@ namespace Penguin.Cms.Web.Analytics.Entities
         {
             if (thisRequest is null)
             {
-                throw new System.ArgumentNullException(nameof(thisRequest));
+                throw new ArgumentNullException(nameof(thisRequest));
             }
 
-            this.Path = thisRequest.Path.Value;
-            this.Referrer = thisRequest.Headers["Referer"];
+            Path = thisRequest.Path.Value;
+            Referrer = thisRequest.Headers["Referer"];
         }
 
         public PageView()

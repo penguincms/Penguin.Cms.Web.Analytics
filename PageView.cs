@@ -7,7 +7,9 @@ namespace Penguin.Cms.Web.Analytics
     public class PageView : Entity
     {
         public Guid Creator { get; set; }
+
         public string Path { get; set; } = string.Empty;
+
         public string Referrer { get; set; } = string.Empty;
 
         public PageView(HttpRequest thisRequest)

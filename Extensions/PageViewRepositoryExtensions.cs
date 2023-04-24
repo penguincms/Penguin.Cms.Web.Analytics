@@ -39,10 +39,5 @@ namespace Penguin.Cms.Web.Analytics.Extensions
             using IWriteContext context = repository.WriteContext();
             repository.Add(pageView);
         }
-
-        public static int GetCountByUrl(IRepository<PageView> repository, Uri Url)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
